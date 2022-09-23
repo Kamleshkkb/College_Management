@@ -228,7 +228,10 @@ class Service {
       String gender,
       String branch,
       String department,
-      String identity) async {
+      String identity,
+      BuildContext context
+      
+      ) async {
     try {
       await auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -276,7 +279,21 @@ class Service {
         'Gender': gender
       });
       print("Student information added successfully");
+      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Account created successfully"),
+                          );
+                        });
     } catch (e) {
+      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Error $e"),
+                          );
+                        });
       print("Error occured inside create student account $e");
     }
   }
@@ -389,7 +406,9 @@ class Service {
       String address,
       String gender,
       String department,
-      String identity) async {
+      String identity,
+      BuildContext context
+      ) async {
     try {
       await auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -431,7 +450,23 @@ class Service {
         'Gender': gender
       });
       print("Student information added successfully");
+
+      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Account created successfully"),
+                          );
+                        });
     } catch (e) {
+
+      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Error $e"),
+                          );
+                        });
       print("Error occured inside create student account $e");
     }
   }
@@ -515,25 +550,48 @@ class Service {
     }
   }
 
-  attentance(List name, List status, List rollno, String sn, String sc) async {
-    String date = DateTime.now().day.toString() +
+  attentance(Map students, String sn, String sc,BuildContext context) async {
+
+    try {
+       String date = DateTime.now().day.toString() +
         "-" +
         DateTime.now().month.toString() +
         "-" +
         DateTime.now().year.toString();
 
-    for (int i = 0; i < name.length; i++) {
+    for (int i = 0; i < students.length; i++) {
       await _firestore
           .collection('Attentance')
           .doc(date)
           .collection('Status')
           .add({
-        'Name': name[i],
-        'Rollno': rollno[i],
-        'Status': status[i],
+        'Rollno': students.keys.elementAt(i),
+        'Status': students.values.elementAt(i)==true?"Present":"Absent",
         'Sn': sn,
         'Sc': sc,
       });
     }
+
+    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Attendance done successfully "),
+                          );
+                        });
+          print("Attendance done successfully");
+    } catch (e) {
+       showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("$e"),
+                          );
+                        });
+                         print("Attendance done error");
+
+                        
+    }
+   
   }
 }

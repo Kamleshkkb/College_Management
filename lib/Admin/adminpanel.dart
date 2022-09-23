@@ -23,7 +23,7 @@ class _AdminPanelState extends State<AdminPanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("College Managment"),
+        title: Text("College Management"),
         actions: [
           IconButton(
               onPressed: () {
@@ -101,9 +101,8 @@ class _AdminPanelState extends State<AdminPanel> {
                       },
                       icon: Icon(Icons.logout),
                       label: Text("Logout")),
-                  Text(
-                      "We definitely that a |n good health is a biggest asset |n all can build in their lives. |n This application put a small effort to you |n doing that, though that data may not 100%|n accurate. ")
-                ],
+
+                    ],
               ),
             ],
           ),

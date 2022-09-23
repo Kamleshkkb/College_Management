@@ -26,7 +26,7 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("College Managment"),
+        title: Text("College Management"),
         actions: [
           IconButton(
               onPressed: () {
@@ -109,17 +109,9 @@ class _BottomBarState extends State<BottomBar> {
                       },
                       icon: Icon(Icons.logout),
                       label: Text("Logout")),
-                  Text(
-                      "We definitely that a |n good health is a biggest asset |n all can build in their lives. |n This application put a small effort to you |n doing that, though that data may not 100%|n accurate. ")
-                ],
+                   ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Copyright@2018, CDGI IT Service : Qualswebs",
-                  style: TextStyle(fontSize: 13),
-                ),
-              ),
+             
             ],
           ),
         ),

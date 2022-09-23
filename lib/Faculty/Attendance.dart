@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_management_app/Common/home.dart';
+import 'package:college_management_app/Faculty/Facultytimetable.dart';
 import 'package:college_management_app/Methods/methods.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 // class facultyTimetable extends StatefulWidget {
 //   const facultyTimetable({ Key? key }) : super(key: key);
@@ -409,6 +413,8 @@ class _NameofStudentState extends State<NameofStudent> {
   List rollno = [];
   List studentstatus = [];
   List color = [];
+  Map<String,bool> students=<String,bool>{};
+  Map<String,String> studentsn=<String,String>{};
   @override
   void initState() {
     // TODO: implement initState
@@ -446,7 +452,7 @@ class _NameofStudentState extends State<NameofStudent> {
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasData != null) {
                       return ListView.builder(
-                          // itemCount: 1,
+                          
                           itemCount:
                               snapshot.hasData ? snapshot.data!.docs.length : 0,
                           reverse: false,
@@ -461,38 +467,52 @@ class _NameofStudentState extends State<NameofStudent> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(x['Name']),
-                                  Text(x['Username']),
-                                  FlatButton(
-                                      color: selected[i] == 'true'
-                                          ? Colors.red
-                                          : Colors.green,
-                                      onPressed: () {
+                                   Text(
+                                    x['Username']
+                                    
+                                  
+                                   ),
+                                 SizedBox(height: 20,),
+                                  Row(
+                                  
+                                    children: [
+                                         Container(
+                                    height: 30,
+                                    width: 30,
+                                    color: students[x['Username']]==true?Colors.green:Colors.blue,
+                                    child: FlatButton(
+                                      onPressed: (){
                                         setState(() {
-                                          if (selected[i] == 'false') {
-                                            final replace = ['true'];
-                                            selected.replaceRange(
-                                                i, i + 1, replace);
-                                            print(selected[i]);
-
-                                            rollno.add(x['Username']);
-                                            studentname.add(x['Name']);
-                                            studentstatus.add("present");
-                                          } else {
-                                            final replace = ['false'];
-                                            selected.replaceRange(
-                                                i, i + 1, replace);
-                                            print(selected[i]);
-                                            rollno.remove(x['Username']);
-                                            studentname.remove(x['Name']);
-                                            studentstatus.remove("absent");
-                                          }
+                                          students[x['Username']]=true;
                                         });
+                                        
                                       },
-                                      child: Text(selected[i] == 'true'
-                                          ? "absent"
-                                          : "present"))
+                                      child: Center(child: Text("P"))),
+                                  ),
+                                  SizedBox(width: 10,),
+                                   Container(
+                                    height: 30,
+                                    width: 30,
+                                    color: students[x['Username']]==false?Colors.red:Colors.blue,
+                                    child: FlatButton(
+                                      onPressed: (){
+
+                                        setState(() {
+                                          students[x['Username']]=false;
+                                        });
+                                        
+                                      },
+                                      child: Center(child: Text("A"))),
+                                  ),
+                                   
+                                    ],
+                                  ),
+                                 
+                               
+                               
                                 ],
                               ),
+                              
                             );
                           });
                     } else {
@@ -501,12 +521,16 @@ class _NameofStudentState extends State<NameofStudent> {
                   }),
               FlatButton(
                   onPressed: () {
+                    print(students);
+                   
                     Navigator.push(
                         context,
+                        
                         MaterialPageRoute(
                             builder: (_) => ShowName(
+
                                   studentn: studentname,
-                                  students: studentstatus,
+                                  students: students,
                                   rollno: rollno,
                                   subjectcode: widget.subjectcode,
                                   subjectname: widget.subname,
@@ -520,18 +544,18 @@ class _NameofStudentState extends State<NameofStudent> {
 }
 
 class ShowName extends StatefulWidget {
+  final Map students;
   final List rollno;
   final List studentn;
-  final List students;
   final String subjectname;
   final String subjectcode;
   const ShowName(
       {Key? key,
-      required this.students,
+    
       required this.studentn,
       required this.rollno,
       required this.subjectname,
-      required this.subjectcode})
+      required this.subjectcode, required this.students})
       : super(key: key);
 
   @override
@@ -548,7 +572,7 @@ class _ShowNameState extends State<ShowName> {
           children: [
             Expanded(
               child: ListView.builder(
-                  itemCount: widget.studentn.length,
+                  itemCount: widget.students.length,
                   itemBuilder: ((context, index) {
                     return Container(
                       child: Column(
@@ -556,14 +580,14 @@ class _ShowNameState extends State<ShowName> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("${widget.studentn[index]}"),
-                              Text("${widget.rollno[index]}"),
+                            //  Text("${widget.studentn[index]}"),
+                              Text("${widget.students.keys.elementAt(index)}"),
                               CircleAvatar(
                                 backgroundColor:
-                                    widget.students[index] == "present"
+                                    widget.students.values.elementAt(index) == true
                                         ? Colors.green
                                         : Colors.red,
-                                child: Text(widget.students[index] == "present"
+                                child: Text(widget.students.values.elementAt(index) == true
                                     ? "P"
                                     : "A"),
                               )
@@ -575,9 +599,15 @@ class _ShowNameState extends State<ShowName> {
                   })),
             ),
             FlatButton(
-                onPressed: () {
-                  _service.attentance(widget.studentn, widget.students,
-                      widget.rollno, widget.subjectname, widget.subjectcode);
+                onPressed: ()async {
+                  List statuss=[];
+                 
+                await  _service.attentance(widget.students, widget.subjectname, widget.subjectcode,context);
+                      
+
+                       Navigator.push(context, MaterialPageRoute(builder: (_)=>Home()));
+                       Navigator.pop(context);
+                       
                 },
                 child: Text("Final submission"))
           ],

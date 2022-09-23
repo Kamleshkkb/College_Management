@@ -100,7 +100,7 @@ class _MessageinputState extends State<Messageinput> {
       });
     });
   }
-
+  var showdi=false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -124,6 +124,29 @@ class _MessageinputState extends State<Messageinput> {
                               _name.text.isNotEmpty &&
                               _subject.text.isNotEmpty) {
                             var name = _auth.currentUser!.displayName;
+                            setState(() {
+                              showdi=true;
+                            });
+
+                            if(showdi==true){
+                               showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Column(
+                                      children: [
+                                        Text("Please wait your document uploading"),
+                                        CircularProgressIndicator(
+
+                                        )
+                                      ],
+                                    )
+                                  );
+                                });
+                            }
+                           
+                            
+
                             await after();
                             _service.sendmessage(
                                 _name.text,
@@ -132,8 +155,12 @@ class _MessageinputState extends State<Messageinput> {
                                 _message.text,
                                 urlname,
                                 attach);
-
+                              
+                                setState(() {
+                                  showdi=false;
+                                });
                             Navigator.pop(context);
+                              Navigator.pop(context);
                           } else {
                             showDialog(
                                 context: context,
@@ -163,7 +190,7 @@ class _MessageinputState extends State<Messageinput> {
                 child: TextField(
                   controller: _name,
                   decoration: const InputDecoration(
-                    hintText: "Type Name Here ",
+                    hintText: "Type Name Here (0832AB123456/TM12345)",
                   ),
                 ),
               ),
@@ -190,7 +217,7 @@ class _MessageinputState extends State<Messageinput> {
                   maxLines: 115,
                   minLines: 5,
                   decoration:
-                      const InputDecoration(hintText: "Kamlesh Kumar Bhardwaj"),
+                      const InputDecoration(hintText:"Message Details"),
                 ),
               ),
               TextButton(

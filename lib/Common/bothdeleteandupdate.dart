@@ -37,13 +37,20 @@ class _ShowDetailsState extends State<ShowDetails> {
             controller: _username,
             decoration: InputDecoration(hintText: "User name"),
           ),
-          FlatButton(onPressed: (){
-            if(_username.text.toString().substring(0,1)=='0')
-            checkstudent=true;
+          FlatButton(onPressed: () async{
+
+            print(_username.text.toString().substring(0,1));
+            if(_username.text.toString().substring(0,1)=='0'){
+              print("hellolllllllll");
+              setState(() {
+                 checkstudent=true;
+              });
+            }
+           
 
            
             
-              CheckUser(_username.text);
+             await CheckUser(_username.text);
               if(check==false)
             {
               showDialog(

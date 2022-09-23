@@ -89,7 +89,7 @@ class _NewsinputState extends State<Newsinput> {
       Fluttertoast.showToast(msg: e.toString(), textColor: Colors.red);
     }
   }
-
+var showdi=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,10 +109,35 @@ class _NewsinputState extends State<Newsinput> {
                       color: Color.fromRGBO(33, 150, 243, 1),
                       onPressed: () async {
                         if (_news.text.isNotEmpty) {
+                          setState(() {
+                            showdi=true;
+                          });
+                           if(showdi==true){
+                               showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Column(
+                                      children: [
+                                        Text("Please wait your document uploading"),
+                                        CircularProgressIndicator(
+
+                                        )
+                                      ],
+                                    )
+                                  );
+                                });
+                            }
                           await after();
                           _service.sendnews(_service.getUserName(), select,
                               _news.text, attach, urlname);
+
+                          setState(() {
+                            showdi=false;
+                          });
+
                           Navigator.pop(context);
+                           Navigator.pop(context);
                         } else {
                           print("News controller is empty");
                         }

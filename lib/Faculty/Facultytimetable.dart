@@ -83,6 +83,10 @@ class _TimetableState extends State<Timetable> {
   int daymonth = DateTime.now().month;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Service _service = Service();
+
+
+
+ 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -276,6 +280,8 @@ class _TimetableState extends State<Timetable> {
                                     return SingleChildScrollView(
                                       child: GestureDetector(
                                           onTap: () {
+
+
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

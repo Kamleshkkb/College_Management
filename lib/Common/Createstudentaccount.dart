@@ -54,7 +54,7 @@ class _studentAccountCreateState extends State<studentAccountCreate> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Create student Account "),
+          title: Text("Create ${widget.identitfy} Account "),
         ),
         body: ListView(
           padding: EdgeInsets.all(10),
@@ -124,8 +124,22 @@ class _studentAccountCreateState extends State<studentAccountCreate> {
               child: Container(
                 width: size.width,
                 alignment: Alignment.center,
-                child: field(
-                    size, "${widget.identitfy} Date of Birth", Icons.abc, _dof),
+                child: Container(
+      height: size.height / 14,
+      width: size.width / 1.1,
+      child: TextField(
+        controller: _dof,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.calendar_month),
+          hintText: "DD/MM/YYYY",
+          hintStyle: TextStyle(color: Colors.grey),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    ),
+               
               ),
             ),
             Padding(
@@ -202,7 +216,10 @@ class _studentAccountCreateState extends State<studentAccountCreate> {
                             _gender.text,
                             _branch.text,
                             _branch.text,
-                            widget.identitfy);
+                            widget.identitfy,
+                            context
+                            
+                            );
                         _address.clear();
                         _branch.clear();
                         _department.clear();
@@ -215,7 +232,14 @@ class _studentAccountCreateState extends State<studentAccountCreate> {
                         _semester.clear();
                         _username.clear();
                       } else {
-                        print("fill all field nessary");
+                        showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("fill all field "),
+                          );
+                        });
+                        print("fill all field ");
                       }
                     } else {
                       if (_address.text.isNotEmpty &&
@@ -237,7 +261,11 @@ class _studentAccountCreateState extends State<studentAccountCreate> {
                             _address.text,
                             _gender.text,
                             _branch.text,
-                            widget.identitfy);
+                            widget.identitfy,
+                            context
+                            
+                            );
+
                         _address.clear();
                         _branch.clear();
                         _dof.clear();
@@ -247,18 +275,20 @@ class _studentAccountCreateState extends State<studentAccountCreate> {
                         _name.clear();
                         _password.clear();
                         _username.clear();
+                        
                       } else {
-                        print("fill all field nessary");
-                      }
-                    }
-
-                    showDialog(
+                         showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Account created successfully"),
+                            title: Text("fill all field "),
                           );
                         });
+                        print("fill all field ");
+                      }
+                    }
+
+                    
                   }),
                   child: Text(
                     'Register',

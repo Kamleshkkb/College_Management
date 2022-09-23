@@ -185,38 +185,12 @@ class _TimetableState extends State<Timetable> {
                   SizedBox(
                     width: 6,
                   ),
-                  FlatButton(
-                      color: day == 6 ? Colors.cyan : Colors.blue,
-                      onPressed: () {
-                        setState(() {
-                          if (day > 6) {
-                            int temp = day - 6;
-                            daydate = daydate - temp;
-                          } else {
-                            int temp = 6 - day;
-                            daydate = daydate + temp;
-                          }
-                          day = 6;
-                        });
-                      },
-                      child: Text("Saturday")),
-                  SizedBox(
-                    width: 6,
-                  ),
+                
                 ],
               ),
             ),
 
-            //  Expanded(
-            //    flex: 1,
-            //    child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Text("5 June to 11 June "),
-            //             Text("$daydate ${DateTime.now().month}")
-            //           ],
-            //         ),
-            //  ),
+           
             SizedBox(
               height: 10,
             ),
@@ -368,7 +342,7 @@ class _TimetableState extends State<Timetable> {
                               .doc(_service.getuserbranch())
                               .collection('Time table details')
                               .doc(_service.getusersem())
-                              .collection('friday')
+                              .collection('firday')
                               .snapshots(),
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -396,40 +370,7 @@ class _TimetableState extends State<Timetable> {
                           })
                       : Container(),
 
-                  day == 6
-                      ? StreamBuilder<QuerySnapshot>(
-                          stream: _firestore
-                              .collection('TimeTable')
-                              .doc(_service.getuserbranch())
-                              .collection('Time table details')
-                              .doc(_service.getusersem())
-                              .collection('saturday')
-                              .snapshots(),
-                          builder:
-                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasData != null) {
-                              return ListView.builder(
-                                  // itemCount: 1,
-                                  itemCount: snapshot.hasData
-                                      ? snapshot.data!.docs.length
-                                      : 0,
-                                  reverse: false,
-                                  shrinkWrap: true,
-                                  primary: true,
-                                  physics: ScrollPhysics(),
-                                  itemBuilder: (context, i) {
-                                    QueryDocumentSnapshot x =
-                                        snapshot.data!.docs[i];
-                                    return SingleChildScrollView(
-                                      child: timetable(x['st'], x['et'],
-                                          x['sn'], x['sc'], x['rn'], x['fn']),
-                                    );
-                                  });
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          })
-                      : Container(),
+                 
                   // DateTime.now().weekday==6? Container(
                   //    child: Column(
                   //      children: [

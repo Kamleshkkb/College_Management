@@ -98,7 +98,7 @@ class _ShowAttendanceState extends State<ShowAttendance> {
                             );
                           });
                     } else {
-                      return CircularProgressIndicator();
+                      return Text("No attendance");
                     }
                   }))
         ],
